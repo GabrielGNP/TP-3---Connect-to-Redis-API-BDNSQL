@@ -1,0 +1,158 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+.header{
+    background-color: rgb(35, 35, 35);
+    text-align: center;
+    padding: 10px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: 10vh;
+}
+.textRed{
+    color: red;
+}
+.textGreen{
+    color: green;
+}
+main{
+    display: flex;
+    background: rgb(98, 98, 98);
+    height: 90vh;
+}
+.navigation{
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+    min-width: 150px;
+    max-width: 250px;
+    padding: 5px;
+    margin: 5px;
+    background: rgb(146, 146, 146);
+    border-radius: 10px;
+}
+.navigation button{
+    margin: 5px;
+    text-wrap: balance;
+    border-radius: 5px;
+    border: 0px;
+    
+}
+.navigation button.selected{
+    background: rgb(0 255 135 / 54%);
+    border: 1px solid rgb(0 255 163);
+}
+.content{
+    padding: 10px;
+    background: rgb(146, 146, 146);
+    width: 100vw;
+    margin: 5px;
+    border-radius: 10px;
+    position: relative;
+    
+}
+.content details{
+    position: absolute;
+    width: 95%;
+}
+.content details summary::-webkit-details-marker {
+    display: none;
+}
+summary {
+    list-style: none;
+}
+.anl{
+    background: transparent;
+}
+.mgr{
+    background: transparent;
+}
+.md{
+    background: transparent;
+}
+
+.content details article{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 85vh;
+}
+
+.conteinerCategories{
+    background: rgb(200, 200, 200);
+    padding: 5px;
+    width: fit-content;
+    border-radius: 15px;
+    position: relative;
+    border: 2px solid grey;
+    margin-bottom: 30px;
+}
+.conteinerCategories p{
+    position: relative;
+    width: 200px;
+    left: calc(50% - 100px);
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    background: rgb(230, 229, 229);
+    border-radius: 5px;
+    border: 2px solid grey;
+}
+.inputsContainer{
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    position: relative;
+
+}
+.inputsContainer label{
+    margin: 5px;
+}
+.inputsContainer input{
+    position: absolute;
+    right: 0px;
+}
+.inputsContainer:nth-child(2){
+    text-align: center;
+}
+.inputsContainer:nth-child(2) input{
+    position: initial;
+}
+.sendData{
+    padding: 5px;
+    border-radius: 5px;
+    border: 0px;
+    position: absolute;
+    bottom: 0px;
+}
+
+#containerDistance,#containerLocates{
+    display: none;
+    margin: 50px;
+    text-align: center;
+}
+#containerDistance.visible,#containerLocates.visible{
+    display: block;
+}
+#distValue{
+    text-align: center;
+    font-weight: 900;
+    color: #ffffff;
+    font-size: 18px;
+    text-shadow: 0 0 3px black;
+}
+
+.goToButton{
+    padding-left: 5px;
+    border: 0px;
+    border-radius: 5px;
+}
+
+.distanceText{
+    background: #c8c8c8;
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 5px;
+    width: 150px;
+}

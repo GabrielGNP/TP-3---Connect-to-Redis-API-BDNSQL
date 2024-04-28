@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="indexStyle.css">
+</head>
+<body>
+    <header class="header">
+        <h1>🌎<span class="textGreen">Geo</span><span class="textRed">Redis</span></h1>
+    </header>
+    <main>
+        <aside class="navigation" id="navigation">
+            <button onclick="openANL(this)">agregar nuevo lugar</button>
+            <button onclick="openMGR(this)">mostrar grupos en un radio de ¿?</button>
+            <button  id="sendMD" onclick="openMD(this)">mostrar distancia</button>
+        </aside>
+        <section class="content">
+            <details class="anl" id="anl">
+                <summary></summary>
+                <article>
+                    <div class="conteinerCategories" id="Cat1">
+                        <p>Grupo de interés</p>
+                        <input type="radio" name="category1" id="Cat1Cerv" value="Cerv" checked>Cervecerías artesanales<br>
+                        <input type="radio" name="category1" id="Cat1Unv" value="Unv">Universidades<br>
+                        <input type="radio" name="category1" id="Cat1Far" value="Far">Farmacias<br>
+                        <input type="radio" name="category1" id="Cat1CentEm" value="CentEm">Centro de atención de emergencias<br>
+                        <input type="radio" name="category1" id="Cat1Super" value="Super">Supermercados<br>
+                    </div>
+                    <div class="inputsContainer">
+                        <label>nombre: <input type="text" id="ANLName" placeholder="nombre"></label>
+                        <label>latitud: <input type="text" id="ANLLat" placeholder="latitud"></label>
+                        <label>longitud: <input type="text" id="ANLLong" placeholder="longitud"></label>
+                        <button onclick="getLocation(1);">mi ubicación actual</button>
+                    </div>
+                    <button class="sendData" onclick="sendANL();">Guardar</button>
+                </article>
+            </details>
+            <details class="mgr" id="mgr">
+                <summary></summary>
+                <article>
+                    <div class="conteinerCategories" id="Cat2">
+                        <p>Grupo de interés</p>
+                        <input type="radio" name="category2" id="Cat2Cerv" value="Cerv" checked>Cervecerías artesanales<br>
+                        <input type="radio" name="category2" id="Cat2Unv" value="Unv">Universidades<br>
+                        <input type="radio" name="category2" id="Cat2Far" value="Far">Farmacias<br>
+                        <input type="radio" name="category2" id="Cat2CentEm" value="CentEm">Centro de atención de emergencias<br>
+                        <input type="radio" name="category2" id="Cat2Super" value="Super">Supermercados<br>
+                    </div>
+                    <div class="inputsContainer">
+                        <label>distancia: (Km)<input style="width: 50px; left: 110px;" type="text" id="MGRDist" placeholder="distancia en kilometros" value="5"></label>
+                        <label>latitud: <input type="text" id="MGRLat" placeholder="latitud"></label>
+                        <label>longitud: <input type="text" id="MGRLong" placeholder="longitud"></label>
+                        <button onclick="getLocation(2);">mi ubicación actual</button>
+                    </div>
+                    <div id="containerLocates"><p>Lugares: <div id="listLocates">algo</div></p></div>
+                    <button class="sendData" onclick="getMGR();">Obtener</button>
+                </article>
+            </details>
+            <details class="md" id="md">
+                <summary></summary>
+                <article>
+                    <div class="conteinerCategories" id="Cat3">
+                        <p>Grupo de interés</p>
+                        <input type="radio" name="category3" id="Cat3Cerv" value="Cerv" checked>Cervecerías artesanales<br>
+                        <input type="radio" name="category3" id="Cat3Unv" value="Unv">Universidades<br>
+                        <input type="radio" name="category3" id="Cat3Far" value="Far">Farmacias<br>
+                        <input type="radio" name="category3" id="Cat3CentEm" value="CentEm">Centro de atención de emergencias<br>
+                        <input type="radio" name="category3" id="Cat3Super" value="Super">Supermercados<br>
+                    </div>
+                    <div class="inputsContainer">
+                        <label>nombre del lugar: <br><input type="text" id="MDName" placeholder="nombre"></label>
+                        <label>tu latitud: <input type="text" id="MDLat" placeholder="latitud"></label>
+                        <label>tu longitud: <input type="text" id="MDLong" placeholder="longitud"></label>
+                        <button onclick="getLocation(3);">mi ubicación actual</button>
+                    </div>
+                    <div id="containerDistance"><p class="distanceText">Distancia: </p><div id="distValue">algo</div></div>
+                    <button class="sendData"onclick="sendMD();">Obtener</button>
+                </article>
+            </details>
+        </section>
+    </main>
+    
+    
+</body>
+</html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    })
+
+    function openANL(button){
+        document.getElementById("navigation").querySelectorAll("button").forEach((element)=>{
+            element.classList.remove("selected");
+        })
+        button.classList.add("selected")
+        document.getElementById("anl").open = true;
+        document.getElementById("mgr").open = false;
+        document.getElementById("md").open = false;
+    }
+    function openMGR(button){
+        document.getElementById("navigation").querySelectorAll("button").forEach((element)=>{
+            element.classList.remove("selected");
+        })
+        button.classList.add("selected")
+        document.getElementById("anl").open = false;
+        document.getElementById("mgr").open = true;
+        document.getElementById("md").open = false;
+        document.getElementById("containerLocates").classList.remove("visible")
+    }
+    function openMD(button){
+        document.getElementById("navigation").querySelectorAll("button").forEach((element)=>{
+            element.classList.remove("selected");
+        })
+        button.classList.add("selected")
+        document.getElementById("anl").open = false;
+        document.getElementById("mgr").open = false;
+        document.getElementById("md").open = true;
+    }
+
+    function getLocation(ubi){
+        navigator.geolocation.getCurrentPosition(function(position) {    
+            var latitud = position.coords.latitude;
+            var longitud = position.coords.longitude;
+            console.log("Latitud: " + latitud + ", Longitud: " + longitud);
+                
+            switch(ubi){
+                case 1:
+                    document.getElementById("ANLLat").value = latitud;
+                    document.getElementById("ANLLong").value = longitud;
+                    break;
+                case 2:
+                    document.getElementById("MGRLat").value = latitud;
+                    document.getElementById("MGRLong").value = longitud;
+                    break;
+                case 3:
+                    document.getElementById("MDLat").value = latitud;
+                    document.getElementById("MDLong").value = longitud;
+                    break;
+            }
+            
+        });
+    }
+
+    function sendANL(){
+        let cat, name, lat, long;
+        document.getElementById("Cat1").querySelectorAll("input").forEach((input)=>{
+            if(input.checked){
+                cat = input.value;
+            }
+        })
+        name = document.getElementById("ANLName").value;
+        lat = document.getElementById("ANLLat").value;
+        long = document.getElementById("ANLLong").value;
+
+       
+        let obj = {
+            "group": cat,
+            "name": name,
+            "long": long,
+            "lat": lat
+        }
+        fetch(`http://localhost:5000/addNewLocate`, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+        })
+        .then(response => {
+            if(response.status >= 200 && response.status < 300)
+                console.log("OK")
+            if(response.status >= 400)
+                console.error("ERROR");
+        })
+    }
+
+    function getMGR(){
+
+        let cat, dist, lat, long;
+        document.getElementById("Cat2").querySelectorAll("input").forEach((input)=>{
+            if(input.checked){
+                cat = input.value;
+            }
+        })
+        dist = document.getElementById("MGRDist").value;
+        lat = document.getElementById("MGRLat").value;
+        long = document.getElementById("MGRLong").value;
+
+       console.log("cat"+cat)
+       console.log("dist"+dist)
+       console.log("lat"+lat)
+       console.log("long"+long)
+
+        fetch(`http://localhost:5000/Locations/${cat}/${lat}/${long}/Km${dist}`)
+        .then(response => response.json())
+        .then(data => {
+
+            console.log(data);
+            let content = "<table>"
+            data.forEach(dato =>{
+                content = content + `<tr><td><p>${dato}</p></td><td><button class="goToButton" id="goTo_${dato}">Ir ➡️</button></td></tr>`
+            })
+            content = content + "</table>"
+            document.getElementById("listLocates").innerHTML = content;
+            data.forEach(dato =>{
+               document.getElementById(`goTo_${dato}`).addEventListener("click", () =>{
+                sendMD(cat, lat, long, dato)
+               })
+            })
+            document.getElementById("containerLocates").classList.add("visible");
+        })
+    }
+
+    function sendMD(cat = "", lat = "", long = "", nomUbi = ""){
+        console.log("entra al sendMD")
+        if(cat != ""){
+            console.log("con categoría")
+            document.getElementById("Cat1").querySelectorAll("input").forEach((input)=>{
+            if(input.value == cat){
+                input.checked = true;
+            }
+        })
+        }else{
+            document.getElementById("Cat2").querySelectorAll("input").forEach((input)=>{
+                if(input.checked){
+                    cat = input.value;
+                }
+            })
+        }
+        if(lat != ""){
+            console.log("con latitud")
+            document.getElementById("MDLat").value = lat;
+        }else lat = document.getElementById("MDLat").value;
+        if(long != ""){
+            console.log("con longitud")
+            document.getElementById("MDLong").value = long;
+        }else long = document.getElementById("MDLong").value;
+        if(nomUbi != ""){
+            console.log("con nombre de ubicacion")
+            document.getElementById("MDName").value = nomUbi;
+        }else nomUbi = document.getElementById("MDName").value;
+        
+        console.log(`cat:${cat} - lat:${lat} - long:${long} - nomUbi:${nomUbi}`)
+
+        fetch(`http://localhost:5000/Distance/${cat}/${nomUbi}/me/${lat}/${long}/`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("hecho: " + data)
+            if(data == 0){
+                document.getElementById("distValue").innerHTML = "0km 0m 0cm";
+            }else{
+                document.getElementById("distValue").innerHTML = convertirDistancia(data);
+            }
+            
+            let container = document.getElementById("containerDistance");
+            console.log(container)
+            container.classList.add("visible");
+        })
+
+        document.getElementById("mgr").open = false;
+        document.getElementById("md").open = true;
+
+        document.getElementById("navigation").querySelectorAll("button").forEach((element)=>{
+            element.classList.remove("selected");
+        })
+        document.getElementById("sendMD").classList.add("selected")
+
+    }
+
+
+
+    function convertirDistancia(distanciaMetros) {
+    
+    var distanciaKm = distanciaMetros / 1000;
+    var metrosRestantes = distanciaMetros % 1000;
+    var centimetrosRestantes = metrosRestantes % 100;
+
+    var metros = Math.floor(metrosRestantes);
+    var centimetros = Math.round(centimetrosRestantes);
+    var distanciaTexto = "";
+
+    if (distanciaKm > 0) {
+        distanciaTexto += Math.floor(distanciaKm) + " km ";
+    }
+    if (metros > 0) {
+        distanciaTexto += metros + " m ";
+    }
+    if (centimetros > 0) {
+        distanciaTexto += centimetros + " cm";
+    }
+
+    return distanciaTexto.trim();
+}
+</script>
